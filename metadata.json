@@ -1,0 +1,6 @@
+{
+  "name": "Controle de Manutenção de Ativos e Serviços",
+  "description": "Sistema corporativo offline de controle de manutenção preventiva e corretiva de ativos e facilities (CMMS), com lançamento em planilha, detecção de patrimônio repetido, regra de exclusão por CPF Master e dashboard de recorrência.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
