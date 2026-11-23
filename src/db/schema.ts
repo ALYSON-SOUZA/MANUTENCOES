@@ -31,6 +31,7 @@ export const maintenanceRecords = pgTable('maintenance_records', {
   warrantyDays: text('warranty_days').notNull().default(''),
   warrantyEndDate: text('warranty_end_date').notNull().default(''),
   value: doublePrecision('value').notNull().default(0),
+  photo: text('photo').notNull().default(''),
   createdBy: text('created_by').notNull(),
   createdByMaster: boolean('created_by_master').notNull().default(false),
   updatedBy: text('updated_by').notNull(),

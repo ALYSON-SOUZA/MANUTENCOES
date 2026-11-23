@@ -23,7 +23,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 
-app.use(express.json({ limit: '5mb' }));
+app.use(express.json({ limit: '15mb' }));
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true });
@@ -123,6 +123,7 @@ app.post('/api/records', requireAuth, async (req: AuthRequest, res) => {
         warrantyDays: String(body.warrantyDays || ''),
         warrantyEndDate: String(body.warrantyEndDate || ''),
         value: Number(body.value),
+        photo: typeof body.photo === 'string' ? body.photo : '',
         createdBy: dbUser.displayName || String(body.createdBy || 'Operador'),
         createdByMaster: dbUser.isMaster,
         createdAt: body.createdAt,
@@ -173,6 +174,7 @@ app.put('/api/records/:id', requireAuth, async (req: AuthRequest, res) => {
       warrantyDays: String(body.warrantyDays || ''),
       warrantyEndDate: String(body.warrantyEndDate || ''),
       value: Number(body.value),
+      photo: typeof body.photo === 'string' ? body.photo : undefined,
       updatedBy: dbUser.displayName || String(body.updatedBy || 'Operador'),
       updatedByMaster: dbUser.isMaster,
     });

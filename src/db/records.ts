@@ -13,12 +13,24 @@ export interface MaintenanceRecordInput {
   warrantyDays?: string;
   warrantyEndDate?: string;
   value: number;
+  photo?: string;
   createdBy: string;
   createdByMaster: boolean;
   createdAt?: string;
   updatedBy: string;
   updatedByMaster: boolean;
   updatedAt?: string;
+}
+
+function sanitizePhotoBase64(raw: unknown): string {
+  if (typeof raw !== 'string') return '';
+  const trimmed = raw.trim();
+  if (!trimmed) return '';
+  if (trimmed.length > 3_500_000) return '';
+  if (/^data:image\/(jpeg|jpg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(trimmed)) {
+    return trimmed;
+  }
+  return '';
 }
 
 export interface AuditLogInput {
@@ -42,6 +54,7 @@ function serializeRecord(row: typeof maintenanceRecords.$inferSelect) {
     warrantyDays: row.warrantyDays || '',
     warrantyEndDate: row.warrantyEndDate || '',
     value: Number(row.value || 0),
+    photo: row.photo || '',
     createdBy: row.createdBy,
     createdByMaster: Boolean(row.createdByMaster),
     createdAt: row.createdAt ? row.createdAt.toISOString() : new Date().toISOString(),
@@ -94,6 +107,7 @@ export async function createMaintenanceRecord(
         warrantyDays: input.warrantyDays || '',
         warrantyEndDate: input.warrantyEndDate || '',
         value: Number(input.value || 0),
+        photo: sanitizePhotoBase64(input.photo),
         createdBy: input.createdBy,
         createdByMaster: Boolean(input.createdByMaster),
         updatedBy: input.updatedBy,
@@ -114,6 +128,7 @@ export async function createMaintenanceRecord(
           warrantyDays: input.warrantyDays || '',
           warrantyEndDate: input.warrantyEndDate || '',
           value: Number(input.value || 0),
+          photo: sanitizePhotoBase64(input.photo),
           updatedBy: input.updatedBy,
           updatedByMaster: Boolean(input.updatedByMaster),
           updatedAt: now,
@@ -146,6 +161,7 @@ export async function updateMaintenanceRecord(
         warrantyDays: input.warrantyDays ?? '',
         warrantyEndDate: input.warrantyEndDate ?? '',
         value: input.value !== undefined ? Number(input.value) : undefined,
+        photo: input.photo !== undefined ? sanitizePhotoBase64(input.photo) : undefined,
         updatedBy: input.updatedBy,
         updatedByMaster: Boolean(input.updatedByMaster),
         updatedAt: now,
@@ -192,6 +208,7 @@ export async function replaceAllMaintenanceRecords(
           warrantyDays: String(item.warrantyDays || ''),
           warrantyEndDate: String(item.warrantyEndDate || ''),
           value: Number(item.value || 0),
+          photo: sanitizePhotoBase64(item.photo),
           createdBy: String(item.createdBy || 'Operador'),
           createdByMaster: Boolean(item.createdByMaster),
           updatedBy: String(item.updatedBy || item.createdBy || 'Operador'),
@@ -235,6 +252,7 @@ export async function seedRecordsIfDatabaseEmpty(
       warrantyDays: String(item.warrantyDays || ''),
       warrantyEndDate: String(item.warrantyEndDate || ''),
       value: Number(item.value || 0),
+      photo: sanitizePhotoBase64(item.photo),
       createdBy: String(item.createdBy || 'Operador'),
       createdByMaster: Boolean(item.createdByMaster),
       updatedBy: String(item.updatedBy || item.createdBy || 'Operador'),

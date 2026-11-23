@@ -1203,6 +1203,187 @@
       padding-top: 19px;
     }
 
+    .btn-camera {
+      position: relative;
+      height: 36px;
+      width: 36px;
+      color: var(--accent-hover);
+      background: var(--accent-soft);
+      border-color: #bae6fd;
+    }
+
+    .btn-camera:hover:not(:disabled) {
+      background: #e0f2fe;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-camera.has-photo {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #15803d;
+    }
+
+    .camera-dot {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #16a34a;
+      border: 1.5px solid #ffffff;
+      display: none;
+    }
+
+    .btn-camera.has-photo .camera-dot {
+      display: block;
+    }
+
+    .launch-photo-bar {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px dashed #7dd3fc;
+      background: #f0f9ff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .launch-photo-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .launch-photo-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #bae6fd;
+      background: #ffffff;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .launch-photo-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .launch-photo-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0369a1;
+    }
+
+    .launch-photo-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .launch-photo-btns {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .photo-thumb-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 6px;
+      padding: 2px 7px 2px 3px;
+      border-radius: 6px;
+      border: 1px solid #bae6fd;
+      background: #f0f9ff;
+      color: #0369a1;
+      font-size: 10.5px;
+      font-weight: 700;
+      vertical-align: middle;
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .photo-thumb-btn:hover {
+      background: #e0f2fe;
+      border-color: var(--accent);
+    }
+
+    .photo-thumb-btn img {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .edit-photo-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 5px;
+      flex-wrap: wrap;
+    }
+
+    .edit-photo-mini-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .edit-photo-mini-btn:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent-hover);
+    }
+
+    .edit-photo-mini-btn.danger:hover {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+      color: var(--danger-text);
+    }
+
+    .photo-modal-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-hairline);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .photo-modal-img {
+      max-width: 100%;
+      max-height: 62vh;
+      border-radius: 8px;
+      object-fit: contain;
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .photo-modal-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
     /* ==========================================================================
        TABELA / RELAÇÃO DE MANUTENÇÕES (8 COLUNAS EXATAS ABAIXO DO LANÇAMENTO)
        ========================================================================== */
@@ -2732,6 +2913,14 @@
                 </div>
 
                 <div class="launch-actions">
+                  <input id="entry-photo-input" type="file" accept="image/*" capture="environment" class="hidden" />
+                  <button id="btn-entry-camera" type="button" class="icon-action btn-camera" title="Tirar ou anexar foto do patrimônio/ocorrência" aria-label="Tirar ou anexar foto">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                      <circle cx="12" cy="13" r="3"/>
+                    </svg>
+                    <span class="camera-dot" aria-hidden="true"></span>
+                  </button>
                   <button id="btn-entry-save" type="button" class="btn-primary" style="min-height:36px; padding:6px 12px;" title="Salvar e preparar novo lançamento">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M12 5v14M5 12h14"/>
@@ -2743,6 +2932,21 @@
                       <path d="M18 6 6 18M6 6l12 12"/>
                     </svg>
                   </button>
+                </div>
+              </div>
+
+              <div id="entry-photo-preview-wrap" class="launch-photo-bar hidden">
+                <div class="launch-photo-info">
+                  <img id="entry-photo-thumb" class="launch-photo-thumb" src="" alt="Pré-visualização da foto anexada" title="Clique para ampliar a foto" />
+                  <div class="launch-photo-meta">
+                    <span class="launch-photo-title">Foto anexada ao lançamento</span>
+                    <span id="entry-photo-size" class="launch-photo-sub">Imagem pronta para envio ao registro</span>
+                  </div>
+                </div>
+                <div class="launch-photo-btns">
+                  <button id="btn-entry-photo-view" type="button" class="btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;">Ampliar</button>
+                  <button id="btn-entry-photo-change" type="button" class="btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;">Trocar Foto</button>
+                  <button id="btn-entry-photo-remove" type="button" class="btn-danger" style="min-height:30px; padding:4px 10px; font-size:11.5px;">Remover</button>
                 </div>
               </div>
             </section>
@@ -2914,6 +3118,26 @@
   </div>
 
   <!-- ======================================================================
+       MODAL: VISUALIZAÇÃO DE FOTO DO ATIVO / OCORRÊNCIA
+       ====================================================================== -->
+  <div id="modal-photo-preview" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-photo-title">
+    <div class="modal-box wide" style="max-width:660px;">
+      <div class="modal-header">
+        <h3 id="modal-photo-title" class="modal-title">Foto do Patrimônio / Ocorrência</h3>
+        <button type="button" class="modal-close" data-close-modal="modal-photo-preview" aria-label="Fechar">✕</button>
+      </div>
+      <div class="photo-modal-wrap">
+        <img id="photo-preview-img" class="photo-modal-img" src="" alt="Foto da manutenção registrada" />
+        <div id="photo-preview-meta" class="photo-modal-meta"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-download-photo" type="button" class="btn-secondary">Baixar Foto (.jpg)</button>
+        <button type="button" class="btn-primary" data-close-modal="modal-photo-preview">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
        MODAL: BACKUP JSON / IMPORTAR / RESTAURAR DADOS DE EXEMPLO
        ====================================================================== -->
   <div id="modal-backup" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-backup-title">
@@ -3062,6 +3286,7 @@
         activeView: 'sheet',
         isLaunchOpen: false,
         editingId: null,
+        editingPhoto: '',
         filters: {
           search: '',
           category: 'TODAS',
@@ -3099,7 +3324,8 @@
           nextDate: calcPreventiveNextDate('Ar-condicionado', todayIso()),
           warrantyDays: '90',
           warrantyEndDate: addDaysIso(todayIso(), 90),
-          valueRaw: ''
+          valueRaw: '',
+          photo: ''
         },
         isCommittingEntry: false,
         pendingConfirmFn: null
@@ -3587,7 +3813,11 @@
       }
 
       function saveRecords() {
-        localStorage.setItem(STORAGE_KEYS.RECORDS, JSON.stringify(state.records));
+        try {
+          localStorage.setItem(STORAGE_KEYS.RECORDS, JSON.stringify(state.records));
+        } catch (e) {
+          // Ignora falha de cota do localStorage quando há grande volume de imagens
+        }
       }
 
       function saveAuditLogs() {
@@ -4086,6 +4316,104 @@
         }).join('\n');
       }
 
+      function isValidPhotoDataUrl(val) {
+        return typeof val === 'string' && /^data:image\/(jpeg|jpg|png|webp);base64,[A-Za-z0-9+/=]+$/i.test(val);
+      }
+
+      function compressImageFileToBase64(file, onSuccess, onError) {
+        if (!file || !/^image\//i.test(file.type || '')) {
+          if (onError) onError('Selecione um arquivo de imagem válido.');
+          return;
+        }
+        var reader = new FileReader();
+        reader.onerror = function () {
+          if (onError) onError('Não foi possível ler a imagem selecionada.');
+        };
+        reader.onload = function () {
+          var img = new Image();
+          img.onerror = function () {
+            if (onError) onError('Formato de imagem não suportado pelo navegador.');
+          };
+          img.onload = function () {
+            try {
+              var maxSide = 1024;
+              var w = img.naturalWidth || img.width || 1024;
+              var h = img.naturalHeight || img.height || 1024;
+              if (w > maxSide || h > maxSide) {
+                var ratio = Math.min(maxSide / w, maxSide / h);
+                w = Math.max(1, Math.round(w * ratio));
+                h = Math.max(1, Math.round(h * ratio));
+              }
+              var canvas = document.createElement('canvas');
+              canvas.width = w;
+              canvas.height = h;
+              var ctx = canvas.getContext('2d');
+              if (!ctx) {
+                if (onError) onError('Não foi possível processar a imagem.');
+                return;
+              }
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, w, h);
+              ctx.drawImage(img, 0, 0, w, h);
+              var dataUrl = canvas.toDataURL('image/jpeg', 0.78);
+              if (onSuccess) onSuccess(dataUrl);
+            } catch (e) {
+              if (onError) onError('Erro ao comprimir a imagem.');
+            }
+          };
+          img.src = String(reader.result || '');
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function formatPhotoApproxKb(dataUrl) {
+        if (!dataUrl) return '';
+        var bytes = Math.round((dataUrl.length * 3) / 4);
+        return Math.max(1, Math.round(bytes / 1024)) + ' KB';
+      }
+
+      function renderEntryPhotoPreview() {
+        var camBtn = document.getElementById('btn-entry-camera');
+        var wrap = document.getElementById('entry-photo-preview-wrap');
+        var thumb = document.getElementById('entry-photo-thumb');
+        var sizeEl = document.getElementById('entry-photo-size');
+        var photo = state.entryDraft.photo;
+        var hasPhoto = isValidPhotoDataUrl(photo);
+
+        if (camBtn) {
+          camBtn.classList.toggle('has-photo', hasPhoto);
+          camBtn.title = hasPhoto
+            ? 'Foto anexada ao lançamento (clique para trocar)'
+            : 'Tirar ou anexar foto do patrimônio/ocorrência';
+        }
+        if (wrap) {
+          wrap.classList.toggle('hidden', !hasPhoto);
+        }
+        if (thumb) {
+          thumb.src = hasPhoto ? photo : '';
+        }
+        if (sizeEl) {
+          sizeEl.textContent = hasPhoto
+            ? 'Foto comprimida (' + formatPhotoApproxKb(photo) + ') · pronta para salvar no registro'
+            : '';
+        }
+      }
+
+      function openPhotoPreviewModal(photoSrc, title, meta) {
+        if (!isValidPhotoDataUrl(photoSrc)) return;
+        var titleEl = document.getElementById('modal-photo-title');
+        var imgEl = document.getElementById('photo-preview-img');
+        var metaEl = document.getElementById('photo-preview-meta');
+        var dlBtn = document.getElementById('btn-download-photo');
+        if (titleEl) titleEl.textContent = title || 'Foto do Patrimônio / Ocorrência';
+        if (imgEl) imgEl.src = photoSrc;
+        if (metaEl) metaEl.textContent = meta || '';
+        if (dlBtn) {
+          dlBtn.setAttribute('data-photo-title', (title || 'foto-manutencao').replace(/[^a-z0-9-_]+/gi, '_').toLowerCase());
+        }
+        openModal('modal-photo-preview');
+      }
+
       function renderLaunchForm(assetMap) {
         var d = state.entryDraft;
         document.getElementById('entry-ticket').value = d.ticketNumber;
@@ -4096,6 +4424,7 @@
         document.getElementById('entry-value').value = d.valueRaw;
 
         updateEntryDuplicateIndicator(assetMap);
+        renderEntryPhotoPreview();
 
         var col6Label = document.getElementById('entry-col6-label');
         var col6Slot = document.getElementById('entry-col6-slot');
@@ -4292,6 +4621,12 @@
                 '<div class="cell-main">' +
                   escapeHtml(rec.assetName) +
                   (isDup ? '<button type="button" class="dup-tag" data-action="history" data-key="' + escapeHtml(key) + '" title="Clique para ver a linha do tempo completa&#10;' + escapeHtml(dupTooltip) + '">Repetido (' + dupCount + 'x)</button>' : '') +
+                  (isValidPhotoDataUrl(rec.photo)
+                    ? '<button type="button" class="photo-thumb-btn" data-action="view-photo" data-id="' + escapeHtml(rec.id) + '" title="Visualizar foto anexada ao registro">' +
+                        '<img src="' + escapeHtml(rec.photo) + '" alt="Foto do ativo" />' +
+                        '<span>Foto</span>' +
+                      '</button>'
+                    : '') +
                 '</div>' +
               '</td>' +
               '<td><span class="type-text ' + typeCls + '">' + escapeHtml(rec.type) + '</span></td>' +
@@ -4344,7 +4679,20 @@
           '<tr class="inline-edit-row" data-editing-id="' + escapeHtml(rec.id) + '">' +
             '<td><input id="edit-ticket" type="text" class="cell-input mono" value="' + escapeHtml(rec.ticketNumber) + '" /></td>' +
             '<td><select id="edit-category" class="cell-select">' + buildCategoryOptionsHtml(rec.category) + '</select></td>' +
-            '<td><input id="edit-asset" type="text" list="asset-suggestions" class="cell-input" value="' + escapeHtml(rec.assetName) + '" autocomplete="off" /></td>' +
+            '<td>' +
+              '<input id="edit-asset" type="text" list="asset-suggestions" class="cell-input" value="' + escapeHtml(rec.assetName) + '" autocomplete="off" />' +
+              '<input id="edit-photo-input" type="file" accept="image/*" capture="environment" class="hidden" />' +
+              '<div id="edit-photo-controls" class="edit-photo-controls">' +
+                '<button id="btn-edit-camera" type="button" class="edit-photo-mini-btn">' +
+                  '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>' +
+                  '<span>' + (isValidPhotoDataUrl(state.editingPhoto) ? 'Trocar Foto' : 'Anexar Foto') + '</span>' +
+                '</button>' +
+                (isValidPhotoDataUrl(state.editingPhoto)
+                  ? '<button id="btn-edit-photo-view" type="button" class="edit-photo-mini-btn">Ver</button>' +
+                    '<button id="btn-edit-photo-remove" type="button" class="edit-photo-mini-btn danger">Remover</button>'
+                  : '') +
+              '</div>' +
+            '</td>' +
             '<td>' +
               '<select id="edit-type" class="cell-select">' +
                 '<option value="Preventiva"' + (isPrev ? ' selected' : '') + '>Preventiva</option>' +
@@ -4540,6 +4888,7 @@
           warrantyDays: d.type === 'Corretiva' ? String(d.warrantyDays || '0') : '',
           warrantyEndDate: d.type === 'Corretiva' ? (d.warrantyEndDate || '') : '',
           value: val,
+          photo: isValidPhotoDataUrl(d.photo) ? d.photo : '',
           createdBy: state.session ? state.session.name : 'Operador',
           createdByMaster: Boolean(state.session && state.session.isMaster),
           createdAt: nowIso,
@@ -4566,6 +4915,7 @@
         if (state.carryOver) {
           state.entryDraft.assetName = '';
           state.entryDraft.valueRaw = '';
+          state.entryDraft.photo = '';
         } else {
           state.entryDraft.ticketNumber = '';
           state.entryDraft.category = CATEGORIES[0];
@@ -4576,7 +4926,10 @@
           state.entryDraft.warrantyDays = '90';
           state.entryDraft.warrantyEndDate = addDaysIso(todayIso(), 90);
           state.entryDraft.valueRaw = '';
+          state.entryDraft.photo = '';
         }
+        var entryPhotoInputEl = document.getElementById('entry-photo-input');
+        if (entryPhotoInputEl) entryPhotoInputEl.value = '';
 
         var assetMap = buildAssetMap(state.records);
         renderShellHeader();
@@ -4664,6 +5017,70 @@
 
         bindEditCol6Presets();
         bindEditWarrantySelect();
+        bindEditPhotoControls();
+      }
+
+      function bindEditPhotoControls() {
+        var wrap = document.getElementById('edit-photo-controls');
+        var fileEl = document.getElementById('edit-photo-input');
+        if (!wrap || !fileEl) return;
+
+        function refreshControls() {
+          var hasPhoto = isValidPhotoDataUrl(state.editingPhoto);
+          wrap.innerHTML =
+            '<button id="btn-edit-camera" type="button" class="edit-photo-mini-btn">' +
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>' +
+              '<span>' + (hasPhoto ? 'Trocar Foto' : 'Anexar Foto') + '</span>' +
+            '</button>' +
+            (hasPhoto
+              ? '<button id="btn-edit-photo-view" type="button" class="edit-photo-mini-btn">Ver</button>' +
+                '<button id="btn-edit-photo-remove" type="button" class="edit-photo-mini-btn danger">Remover</button>'
+              : '');
+          wireButtons();
+        }
+
+        function wireButtons() {
+          var camBtn = document.getElementById('btn-edit-camera');
+          var viewBtn = document.getElementById('btn-edit-photo-view');
+          var remBtn = document.getElementById('btn-edit-photo-remove');
+          if (camBtn) {
+            camBtn.addEventListener('click', function () { fileEl.click(); });
+          }
+          if (viewBtn) {
+            viewBtn.addEventListener('click', function () {
+              var ticketVal = (document.getElementById('edit-ticket') && document.getElementById('edit-ticket').value) || 'Edição';
+              var assetVal = (document.getElementById('edit-asset') && document.getElementById('edit-asset').value) || 'Ativo';
+              openPhotoPreviewModal(state.editingPhoto, ticketVal + ' · ' + assetVal, 'Pré-visualização em edição');
+            });
+          }
+          if (remBtn) {
+            remBtn.addEventListener('click', function () {
+              state.editingPhoto = '';
+              fileEl.value = '';
+              refreshControls();
+              showToast('Foto removida da edição. Clique em Salvar para confirmar.', '');
+            });
+          }
+        }
+
+        fileEl.addEventListener('change', function (ev) {
+          var file = ev.target.files && ev.target.files[0];
+          if (!file) return;
+          compressImageFileToBase64(
+            file,
+            function (dataUrl) {
+              state.editingPhoto = dataUrl;
+              refreshControls();
+              showToast('Foto atualizada na edição. Clique em Salvar para confirmar.', 'success');
+            },
+            function (msg) {
+              showToast(msg, 'error');
+            }
+          );
+          ev.target.value = '';
+        });
+
+        wireButtons();
       }
 
       function bindEditCol6Presets() {
@@ -4734,11 +5151,13 @@
           rec.nextDate = '';
         }
 
+        rec.photo = isValidPhotoDataUrl(state.editingPhoto) ? state.editingPhoto : '';
         rec.updatedBy = state.session ? state.session.name : 'Operador';
         rec.updatedByMaster = Boolean(state.session && state.session.isMaster);
         rec.updatedAt = new Date().toISOString();
 
         state.editingId = null;
+        state.editingPhoto = '';
         saveRecords();
         markDataChanged();
         renderAssetSuggestions();
@@ -5040,6 +5459,12 @@
                 '<span class="tabular">Realizada em ' + escapeHtml(formatDateBr(rec.performedDate)) + '</span>' +
                 '<span class="status-line ' + st.cls + '">' + escapeHtml(st.label) + '</span>' +
                 '<span>Responsável: ' + escapeHtml(author) + (rec.updatedByMaster ? ' (Master)' : '') + '</span>' +
+                (isValidPhotoDataUrl(rec.photo)
+                  ? '<button type="button" class="photo-thumb-btn" data-history-photo-id="' + escapeHtml(rec.id) + '" title="Visualizar foto registrada">' +
+                      '<img src="' + escapeHtml(rec.photo) + '" alt="Foto" />' +
+                      '<span>Ver Foto</span>' +
+                    '</button>'
+                  : '') +
               '</div>' +
             '</div>'
           );
@@ -5484,8 +5909,47 @@
           state.entryDraft.ticketNumber = '';
           state.entryDraft.assetName = '';
           state.entryDraft.valueRaw = '';
+          state.entryDraft.photo = '';
+          var photoInput = document.getElementById('entry-photo-input');
+          if (photoInput) photoInput.value = '';
           renderLaunchForm(buildAssetMap(state.records));
           entryTicket.focus();
+        });
+
+        var entryPhotoInput = document.getElementById('entry-photo-input');
+        var triggerEntryCamera = function () {
+          if (entryPhotoInput) entryPhotoInput.click();
+        };
+        document.getElementById('btn-entry-camera').addEventListener('click', triggerEntryCamera);
+        document.getElementById('btn-entry-photo-change').addEventListener('click', triggerEntryCamera);
+        entryPhotoInput.addEventListener('change', function (ev) {
+          var file = ev.target.files && ev.target.files[0];
+          if (!file) return;
+          compressImageFileToBase64(
+            file,
+            function (dataUrl) {
+              state.entryDraft.photo = dataUrl;
+              renderEntryPhotoPreview();
+              showToast('Foto anexada ao lançamento.', 'success');
+            },
+            function (msg) {
+              showToast(msg, 'error');
+            }
+          );
+          ev.target.value = '';
+        });
+        var viewEntryPhoto = function () {
+          if (!isValidPhotoDataUrl(state.entryDraft.photo)) return;
+          var label = (state.entryDraft.assetName || state.entryDraft.ticketNumber || 'Novo Lançamento').trim();
+          openPhotoPreviewModal(state.entryDraft.photo, 'Pré-visualização · ' + label, 'Foto ainda não salva na relação');
+        };
+        document.getElementById('btn-entry-photo-view').addEventListener('click', viewEntryPhoto);
+        document.getElementById('entry-photo-thumb').addEventListener('click', viewEntryPhoto);
+        document.getElementById('btn-entry-photo-remove').addEventListener('click', function () {
+          state.entryDraft.photo = '';
+          entryPhotoInput.value = '';
+          renderEntryPhotoPreview();
+          showToast('Foto removida do lançamento.', '');
         });
 
         // Filtros da Planilha (Busca + Flyout da Barra Lateral + Botão X Vermelho no Canto da Tabela)
@@ -5571,15 +6035,27 @@
           var id = btn.getAttribute('data-id');
 
           if (action === 'edit') {
+            var editRec = state.records.find(function (r) { return r.id === id; });
             state.editingId = id;
+            state.editingPhoto = editRec && isValidPhotoDataUrl(editRec.photo) ? editRec.photo : '';
             renderSheetTable();
             var tEl = document.getElementById('edit-ticket');
             if (tEl) tEl.focus();
           } else if (action === 'cancel-edit') {
             state.editingId = null;
+            state.editingPhoto = '';
             renderSheetTable();
           } else if (action === 'save-edit') {
             saveInlineEdit(id);
+          } else if (action === 'view-photo') {
+            var photoRec = state.records.find(function (r) { return r.id === id; });
+            if (photoRec && isValidPhotoDataUrl(photoRec.photo)) {
+              openPhotoPreviewModal(
+                photoRec.photo,
+                photoRec.ticketNumber + ' · ' + photoRec.assetName,
+                photoRec.category + ' · ' + photoRec.type + ' · Realizada em ' + formatDateBr(photoRec.performedDate)
+              );
+            }
           } else if (action === 'history') {
             openAssetHistoryModal(btn.getAttribute('data-key'));
           } else if (action === 'renew') {
@@ -5593,6 +6069,7 @@
             state.entryDraft.performedDate = renewPerf;
             state.entryDraft.nextDate = calcPreventiveNextDate(srcPrev.category, renewPerf);
             state.entryDraft.valueRaw = formatNumberBr(srcPrev.value);
+            state.entryDraft.photo = '';
             openLaunchCard();
             var ticketEl = document.getElementById('entry-ticket');
             if (ticketEl) ticketEl.focus();
@@ -5609,6 +6086,7 @@
             state.entryDraft.warrantyDays = src.warrantyDays || '90';
             state.entryDraft.warrantyEndDate = src.warrantyEndDate || '';
             state.entryDraft.valueRaw = '';
+            state.entryDraft.photo = '';
             openLaunchCard();
             var assetInput = document.getElementById('entry-asset');
             if (assetInput) {
@@ -5767,7 +6245,32 @@
           openAssetHistoryModal(btn.getAttribute('data-dash-history'));
         });
 
-        // Ação do Modal de Histórico do Patrimônio
+        // Ação do Modal de Histórico do Patrimônio e Modal de Foto
+        document.getElementById('asset-history-timeline').addEventListener('click', function (ev) {
+          var photoBtn = ev.target.closest('[data-history-photo-id]');
+          if (!photoBtn) return;
+          var recId = photoBtn.getAttribute('data-history-photo-id');
+          var rec = state.records.find(function (r) { return r.id === recId; });
+          if (rec && isValidPhotoDataUrl(rec.photo)) {
+            openPhotoPreviewModal(
+              rec.photo,
+              rec.ticketNumber + ' · ' + rec.assetName,
+              rec.category + ' · ' + rec.type + ' · Realizada em ' + formatDateBr(rec.performedDate)
+            );
+          }
+        });
+        document.getElementById('btn-download-photo').addEventListener('click', function () {
+          var imgEl = document.getElementById('photo-preview-img');
+          var src = imgEl ? imgEl.getAttribute('src') : '';
+          if (!isValidPhotoDataUrl(src)) return;
+          var baseName = document.getElementById('btn-download-photo').getAttribute('data-photo-title') || 'foto-manutencao';
+          var a = document.createElement('a');
+          a.href = src;
+          a.download = baseName + '.jpg';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        });
         document.getElementById('btn-filter-from-history').addEventListener('click', function () {
           if (!state.historyFilterKey) return;
           state.filters.search = state.historyFilterKey;
