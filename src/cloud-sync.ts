@@ -1,28 +1,98 @@
-import { onAuthStateChanged, signInWithPopup, signOut, User } from 'firebase/auth';
-import { auth, googleAuthProvider } from './lib/firebase.ts';
+import { getApps, initializeApp } from 'firebase/app';
+import { Auth, getAuth, onAuthStateChanged, signInWithPopup, signOut, User } from 'firebase/auth';
+import firebaseConfig from '../firebase-applet-config.json';
+import { auth as initialAuth, googleAuthProvider } from './lib/firebase.ts';
 
+let activeAuth: Auth = initialAuth;
 let memoryIdToken: string | null = null;
-let currentUser: User | null = auth.currentUser;
+let currentUser: User | null = activeAuth.currentUser;
 const authReadyCallbacks: Array<(user: User | null) => void> = [];
 let authResolved = false;
 
-onAuthStateChanged(auth, async (user) => {
-  currentUser = user;
-  if (user) {
-    try {
-      memoryIdToken = await user.getIdToken();
-    } catch {
+function attachAuthListener(authInstance: Auth) {
+  onAuthStateChanged(authInstance, async (user) => {
+    currentUser = user;
+    if (user) {
+      try {
+        memoryIdToken = await user.getIdToken();
+      } catch {
+        memoryIdToken = null;
+      }
+    } else {
       memoryIdToken = null;
     }
-  } else {
-    memoryIdToken = null;
+    authResolved = true;
+    while (authReadyCallbacks.length > 0) {
+      const cb = authReadyCallbacks.shift();
+      if (cb) cb(user);
+    }
+  });
+}
+
+attachAuthListener(activeAuth);
+
+function resetAuthInstance() {
+  const appName = `cmms_auth_${Date.now()}`;
+  const existing = getApps().find((a) => a.name === appName);
+  const freshApp = existing || initializeApp(firebaseConfig, appName);
+  activeAuth = getAuth(freshApp);
+  attachAuthListener(activeAuth);
+}
+
+function hostnameMatchesDomain(hostname: string, domain: string): boolean {
+  const cleanHost = hostname.toLowerCase();
+  const cleanDomain = domain.toLowerCase();
+  return cleanHost === cleanDomain || cleanHost.endsWith(`.${cleanDomain}`);
+}
+
+async function isCurrentHostAuthorized(): Promise<boolean> {
+  try {
+    const hostname = window.location.hostname;
+    if (!hostname) return false;
+    const res = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/projects?key=${encodeURIComponent(firebaseConfig.apiKey)}`
+    );
+    if (!res.ok) return false;
+    const data = (await res.json()) as { authorizedDomains?: string[] };
+    const list = Array.isArray(data.authorizedDomains) ? data.authorizedDomains : [];
+    return list.some((d) => hostnameMatchesDomain(hostname, d));
+  } catch {
+    return false;
   }
-  authResolved = true;
-  while (authReadyCallbacks.length > 0) {
-    const cb = authReadyCallbacks.shift();
-    if (cb) cb(user);
+}
+
+async function buildFriendlyAuthError(err: unknown): Promise<Error> {
+  const code = (err as { code?: string })?.code || '';
+  const hostname = window.location.hostname || window.location.origin;
+
+  if (code === 'auth/unauthorized-domain') {
+    resetAuthInstance();
+    const authorizedNow = await isCurrentHostAuthorized();
+    if (authorizedNow) {
+      return new Error(
+        `O domínio "${hostname}" já está autorizado, mas havia cache da tentativa anterior. Clique em "Entrar no Sistema" novamente.`
+      );
+    }
+    return new Error(
+      `Domínio não autorizado no login Google (${hostname}). Adicione "${hostname}" em Firebase Console → Authentication → Configurações → Domínios autorizados (Projeto: ${firebaseConfig.projectId}) e clique em Entrar novamente.`
+    );
   }
-});
+
+  if (code === 'auth/popup-blocked') {
+    return new Error(
+      'O navegador bloqueou a janela de login do Google. Habilite pop-ups para este endereço e tente novamente.'
+    );
+  }
+  if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+    return new Error('O login Google foi fechado antes da conclusão. Tente entrar novamente.');
+  }
+  if (code === 'auth/network-request-failed') {
+    return new Error('Falha de conexão ao autenticar com o Google. Verifique sua rede e tente novamente.');
+  }
+
+  const rawMsg = err instanceof Error ? err.message : String(err || 'Falha na autenticação.');
+  return new Error(rawMsg);
+}
 
 async function getFreshToken(): Promise<string> {
   if (!currentUser) {
@@ -101,8 +171,12 @@ const cloudBridge: CloudBridge = {
 
   async signInAndLoad(name: string, cpf: string, sampleRecords: unknown[]) {
     if (!currentUser) {
-      const cred = await signInWithPopup(auth, googleAuthProvider);
-      currentUser = cred.user;
+      try {
+        const cred = await signInWithPopup(activeAuth, googleAuthProvider);
+        currentUser = cred.user;
+      } catch (err) {
+        throw await buildFriendlyAuthError(err);
+      }
     }
     memoryIdToken = await currentUser.getIdToken();
 
@@ -157,7 +231,7 @@ const cloudBridge: CloudBridge = {
   async signOutGoogle() {
     memoryIdToken = null;
     currentUser = null;
-    await signOut(auth);
+    await signOut(activeAuth);
   },
 
   async createRecord(record: unknown) {
